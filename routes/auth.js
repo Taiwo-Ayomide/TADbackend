@@ -18,9 +18,10 @@ const sendEmail = async (email, subject, text, html) => {
     const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-            user: "taiwoayomide202@gmail.com", // Use environment variable for security
+            user: "noreplytad2.0@gmail.com", // Use environment variable for security
             // "process.env.EMAIL_USER", // Use environment variable for security
-            pass: "sdjv knfz ioft ovbs" // Use environment variable for security
+            pass: "ggzp vhpf vxnb xlmw" // Use environment variable for security
+            // pass: "sdjv knfz ioft ovbs" // Use environment variable for security
         },
     });
 
