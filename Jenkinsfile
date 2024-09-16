@@ -23,7 +23,7 @@ pipeline {
                     sh 'git config --global user.name "Taiwo-Ayomde"'
                     sh 'git add .'
                     sh 'git commit -m "Automated commit from Jenkins" || true'
-                    sh 'git push https://Taiwo-Ayomide:Ayomide1!$$$@github.com/Taiwo-Ayomide/TADadmin.git HEAD:main'
+                    sh 'git push https://Taiwo-Ayomide:Ayomide1!$$$@github.com/Taiwo-Ayomide/TADbackend.git HEAD:main'
                 }
             }
         }
