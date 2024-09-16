@@ -5,11 +5,30 @@ const dotenv = require("dotenv");
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const bodyParser = require("body-parser");
+const rateLimit = require('express-rate-limit') // Rate Limiting in Nodejs
+const { createProxyMiddleware } = require('http-proxy-middleware')
 
 const authRoute = require('./routes/auth');
 const userRoute = require('./routes/user');
 const app = express();
 
+const targetServer = "https://tadbackend.onrender.com"
+
+const limiter = rateLimit({
+    windowMS: 15*6*1000,
+    max: 100,
+    message: 'To many request at this time, Try again later'
+});
+
+
+app.use('/api', createProxyMiddleware({
+    target: targetServer,
+    changeOrigin: true,
+    pathRewrite: {
+        '^/api': ''
+    }
+}));
+app.use(limiter);
 dotenv.config();
 app.use(express());
 app.use(cors());
