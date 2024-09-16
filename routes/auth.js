@@ -44,8 +44,8 @@ router.post("/signup", async (req, res) => {
 
         const existingUser = await User.findOne({ email: email });
         if (existingUser) {
-            alert('Email already Exist, Please try a new Email Address');
-            return res.status(400).json({ message: 'Email Already Exist' });
+            return alert('Email already Exist, Please try a new Email Address');
+            // return res.status(400).json({ message: 'Email Already Exist' });
         }
         
         // Create new user with inactive status
