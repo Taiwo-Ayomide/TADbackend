@@ -20,7 +20,7 @@ router.put("/candidate/:id/accept", async (req, res) => {
         return res.status(200).json({ message: 'Candidate accepted', candidate: updatedCandidate });
 
     } catch (error) {
-        return res.status(500).json({ message: 'Server error', error: error.message });
+        return res.status(500).json({ message: 'Server TimeOut', error: error.message });
     }
 })
 
@@ -28,12 +28,12 @@ router.put("/candidate/:id/accept", async (req, res) => {
 // GET ADMITTED CANDIDATES
 router.get('/candidates/admitted', async (req, res) => {
     try {
-        // Find candidates where isAdmitted is false
+        // Find candidates where isAdmitted is true
         const candidates = await User.find({ isAdmitted: true });
 
         return res.status(200).json({ candidates });
     } catch (error) {
-        return res.status(500).json({ message: 'Server error', error: error.message });
+        return res.status(500).json({ message: 'Server Time Out', error: error.message });
     }
 });
 

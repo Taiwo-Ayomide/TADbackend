@@ -18,10 +18,8 @@ const sendEmail = async (email, subject, text, html) => {
     const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-            user: "noreplytad2.0@gmail.com", // Use environment variable for security
-            // "process.env.EMAIL_USER", // Use environment variable for security
-            pass: "ggzp vhpf vxnb xlmw" // Use environment variable for security
-            // pass: "sdjv knfz ioft ovbs" // Use environment variable for security
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
         },
     });
 
@@ -44,12 +42,11 @@ router.post("/signup", async (req, res) => {
 
         const existingUser = await User.findOne({ email: email });
         if (existingUser) {
-            alert('Email already Exist, Please try a new Email Address');
             return res.status(400).json({ message: 'Email Already Exist' });
         }
         
         // Create new user with inactive status
-        const newUser = new User({ email, password: encryptedPassword, isActive: true });
+        const newUser = new User({ email, password: encryptedPassword, isActive: false });
         const savedUser = await newUser.save();
 
 
@@ -87,7 +84,7 @@ router.get("/verify/:id/:token", async (req, res) => {
         // Find user and update inActive to false
         const user = await User.findOneAndUpdate(
             { email },
-            { isActive: false },
+            { isActive: true },
             { new: true }
         );
 
@@ -212,49 +209,47 @@ router.post("/login", async (req, res) => {
 
     } catch (error) {
         console.error(error);
-        res.status(500).json("Server error");
+        res.status(500).json("Server Time Out");
     }
 });
 
 // ADMIN LOGIN
 router.post("/admin-login", async (req, res) => {
     try {
-      const { email, password } = req.body;
+        const { email, password } = req.body;
   
-      const user = await User.findOne({ email });
-      // !user && res.status(400).json("wrong information");
-      if (!user) {
-          return res.status(400).json("Wrong Email")
-      }
+        const user = await User.findOne({ email });
+        // !user && res.status(400).json("wrong information");
+        if (!user) {
+            return res.status(400).json("Wrong Email")
+        }
   
-      const hashpassword = CryptoJS.AES.decrypt(
-          user.password,
-          process.env.PASS_SEC,
-      );
-      const originalPassword = hashpassword.toString(CryptoJS.enc.Utf8);
+        const hashpassword = CryptoJS.AES.decrypt(
+            user.password,
+            process.env.PASS_SEC,
+        );
+        const originalPassword = hashpassword.toString(CryptoJS.enc.Utf8);
   
   
-      if (originalPassword !== password) {
-          return res.status(401).json("Wrong password")
-      }
+        if (originalPassword !== password) {
+            return res.status(401).json("Wrong password")
+        }
   
-      const accessToken = jwt.sign(
-          {
+        const accessToken = jwt.sign(
+            {
             //   id: user._id,
-              isAdmin: user.isAdmin,
-          }, 
-          process.env.JWT_SEC,
-          { expiresIn: "3d" },
+                isAdmin: user.isAdmin,
+            }, 
+            process.env.JWT_SEC,
+            { expiresIn: "3d" },
+        );
+        const { password:_, ...others } = user._doc;
   
-      );
-      const { password:_, ...others } = user._doc;
-  
-      res.status(200).json({ ...others, accessToken });
+        res.status(200).json({ ...others, accessToken });
   
     } catch (error) {
-      res.status(500).json(error.message); 
+        res.status(500).json(error.message); 
     }
-  
 });
   
 

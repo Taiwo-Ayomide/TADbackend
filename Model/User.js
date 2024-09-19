@@ -33,7 +33,7 @@ const UserSchema = new moongoose.Schema(
         },
         isActive: {
             type: Boolean,
-            default: true
+            default: false
         },
     }, { timestamps: true }, 
 );

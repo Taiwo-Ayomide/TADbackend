@@ -28,6 +28,7 @@ app.use('/api', createProxyMiddleware({
         '^/api': ''
     }
 }));
+
 app.use(limiter);
 dotenv.config();
 app.use(express());
@@ -36,11 +37,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(session({
-    secret: process.env.SESSION_SECRET, // Use a strong, unique secret key
+    secret: process.env.SESSION_SECRET, 
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({ mongoUrl: process.env.MONGODB_API }), // Store sessions in MongoDB
-    cookie: { secure: false, maxAge: 3600000 } // Adjust cookie settings as needed
+    cookie: { secure: false, maxAge: 3600000 }
 }));
 
 app.use(express.json());
